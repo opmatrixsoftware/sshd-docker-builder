@@ -7,7 +7,6 @@ RUN yum -y install openssh-server
 RUN yum -y install wget
 RUN yum -y install iptables
 RUN yum -y install bridge-utils
-RUN sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 RUN echo 1 > /proc/sys/net/ipv4/ip_forward
 RUN modprobe br_netfilter
 RUN sysctl --system

@@ -1,5 +1,8 @@
 FROM centos:latest
 
+COPY entrypoint.sh /
+
+RUN chmod 711 /entrypoint.sh
 RUN groupadd docker
 RUN yum -y update
 RUN yum -y install openssh
@@ -19,5 +22,4 @@ RUN ln -s /usr/libexec/docker/docker-init-current /usr/bin/docker-init
 
 EXPOSE 22
 
-COPY entrypoint.sh /
 CMD ["/entrypoint.sh"]

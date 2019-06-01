@@ -7,7 +7,6 @@ RUN yum -y install openssh-server
 RUN yum -y install wget
 RUN yum -y install iptables
 RUN yum -y install bridge-utils
-RUN echo 1 > /proc/sys/net/ipv4/ip_forward
 RUN modprobe br_netfilter
 RUN sysctl --system
 RUN groupadd docker
@@ -20,6 +19,8 @@ RUN ln -s /usr/libexec/docker/docker-runc-current /usr/bin/docker-runc
 RUN ln -s /usr/libexec/docker/docker-init-current /usr/bin/docker-init
 
 EXPOSE 22
+
+#RUN echo 1 > /proc/sys/net/ipv4/ip_forward
 
 COPY entrypoint.sh /
 CMD ["/entrypoint.sh"]

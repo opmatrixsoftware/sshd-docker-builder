@@ -16,6 +16,6 @@ newkey:
 
 gensecret:
         KEY=$$(cat sshkeys/id_rsa.pub |base64 -w 0) ;\
-        sed "s/my_key/$${KEY}/" secret.yaml > ssh-key-secret.yaml
+        sed "s/my_key/$${KEY}/" secret.yaml > ssh-key-secret.yamlvi
 
 .PHONY: newkey gensecret addsshkey deploy remove

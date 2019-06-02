@@ -22,38 +22,26 @@ $ docker run --privileged --name some-docker -d docker:dind
 
 # How to deploy in Kubernetes
 
-TBD
+Run the Makefile or generate the a RSA key-pair.
+Import the sshd-docker-builder-yaml file into Kubernetes
 
-## Generate your ssh key
+With Make:
+```
+$ make all
+```
 
-generate the id_rsa key or copy your own key to sshkeys folder
-
-TBD
-
-## create service and replication controller
-
+Manually:
+```
+$ mkdir sshkeys
+$ ssh-keygen -q -f sshkeys/id_rsa -N '' -t rsa
+$ KEY=$(cat sshkeys/id_rsa.pub | base64 -w 0)
+$ sed 's/my_key/'$KEY'/' secret.yaml > ssh-key-secret.yaml
+$ unset KEY
+$ kubectl create -f ssh-key-secret.yaml
+$ kubectl create -f sshd-docker-builder.yaml
+```
 
 ## find the endpoint and ssh to the server
-
 ```
-kubectl describe service sshd-jumpserver-svc
-
-Name:           
-Namespace:      
-Labels:         name=
-Selector:       app=
-Type:           LoadBalancer
-IP:         10.0.43.1
-LoadBalancer Ingress:   amazonaws.com
-Port:           ssh 22/TCP
-NodePort:       ssh 30012/TCP
-Endpoints:      10.25.25.50:22
-Session Affinity:   None
-No events.
-```
-
-then you can ssh to the server with the private key
-
-```
-TBD
+kubectl describe service sshd-docker-builder-01-nodeport
 ```

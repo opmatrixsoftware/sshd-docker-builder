@@ -1,4 +1,4 @@
-﻿apiVersion: apps/v1beta2
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -69,7 +69,7 @@ metadata:
   namespace: default
 ## To create automatic cleanups uncomment the "ownerReferences" section and add the uid of the Deployment
 #  ownerReferences:
-#    - apiVersion: apps/v1beta2
+#    - apiVersion: apps/v1
 #      controller: true
 #      kind: deployment
 #      name: sshd-docker-builder-01

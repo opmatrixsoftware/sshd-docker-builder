@@ -13,6 +13,8 @@ RUN yum -y install iptables
 RUN yum -y install bridge-utils
 RUN yum -y install docker
 RUN yum -y install epel-release
+RUN yum -y install git
+RUN yum -y install svn
 RUN yum -y install python-pip
 RUN yum clean all
 RUN pip install --upgrade pip

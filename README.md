@@ -1,13 +1,14 @@
-CentOS 7 Docker in Docker (DinD) Image with SSHD
+CentOS 7 Docker in Docker (DinD) Image with SSHD and Helm
 ===============================
 
 # Description
-The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH and build other docker images.  The image also has ``svn``, ``git``, and ``make`` 
+The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH and build other docker images and Helm Charts.  The image also has ``svn``, ``git``, and 
+``make`` 
 to copy/pull artifacts from version control systems directly in to the container and automate image building with ``make``. 
 
 ## Docker image
 
-Centos:7 with docker, docker-compose, and openssh installed.
+Centos:7 with helm, kubectl, docker, docker-compose, and openssh installed.
 
 ## Kubernetes files
 

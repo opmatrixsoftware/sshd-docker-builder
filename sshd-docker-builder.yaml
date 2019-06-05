@@ -29,6 +29,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: KUBE_CONFIG
+          value: '[copy kube config]'
         - name: PUBLIC_KEY
           valueFrom:
             secretKeyRef:

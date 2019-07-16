@@ -31,10 +31,10 @@ spec:
       - env:
         - name: KUBE_CONFIG
           value: '[copy kube config]'
-        - name: PUBLIC_KEY
+        - name: SSH_PUB_KEY
           valueFrom:
             secretKeyRef:
-              key: PUBLIC_KEY
+              key: SSH_PUB_KEY
               name: ssh-key
               optional: false
         image: docker.io/opmatrix/sshd-docker-builder

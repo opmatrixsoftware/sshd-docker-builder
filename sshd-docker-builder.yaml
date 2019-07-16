@@ -1,20 +1,17 @@
 ﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
   labels:
-    cattle.io/creator: norman
-    workload.user.cattle.io/workloadselector: deployment-default-sshd-docker-builder-01
-  name: sshd-docker-builder-01
+    workload.user.cattle.io/workloadselector: deployment-default-docker-builder
+  name: docker-builder
   namespace: default
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
-  revisionHistoryLimit: 2
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-default-sshd-docker-builder-01
+      workload.user.cattle.io/workloadselector: deployment-default-docker-builder
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,68 +20,53 @@ spec:
   template:
     metadata:
       annotations:
-        field.cattle.io/ports: '[[{"containerPort":22,"dnsName":"sshd-docker-builder-01-nodeport","kind":"NodePort","name":"22tcp01","protocol":"TCP","sourcePort":0}]]'
+        field.cattle.io/ports: '[[{"containerPort":22,"dnsName":"docker-builder-nodeport","kind":"NodePort","name":"22tcp311221","protocol":"TCP","sourcePort":31122}]]'
       labels:
-        workload.user.cattle.io/workloadselector: deployment-default-sshd-docker-builder-01
+        workload.user.cattle.io/workloadselector: deployment-default-docker-builder
     spec:
       containers:
-      - env:
-        - name: KUBE_CONFIG
-          value: '[copy kube config]'
-        - name: SSH_PUB_KEY
-          valueFrom:
-            secretKeyRef:
-              key: SSH_PUB_KEY
-              name: ssh-key
-              optional: false
-        image: docker.io/opmatrix/sshd-docker-builder
-        imagePullPolicy: Always
-        name: sshd-docker-builder-01
-        ports:
-        - containerPort: 22
-          name: 22tcp01
-          protocol: TCP
-        securityContext:
-          allowPrivilegeEscalation: true
-          privileged: true
-          procMount: Default
-        stdin: true
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        tty: true
+        - env:
+            - name: SSH_PUB_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: SSH_PUB_KEY
+                  name: docker-builder-keys
+                  optional: false
+          image: docker.io/opmatrix/sshd-docker-builder
+          imagePullPolicy: Always
+          name: docker-builder
+          ports:
+            - containerPort: 22
+              name: 22tcp311221
+              protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities: {}
+            privileged: true
+            procMount: Default
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+          stdin: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          tty: true
+          volumeMounts:
+            - mountPath: /root/.kube
+              name: kube-config
+      dnsConfig: {}
       dnsPolicy: ClusterFirst
-      hostname: docker-builder-01
       restartPolicy: Always
       schedulerName: default-scheduler
+      securityContext: {}
       terminationGracePeriodSeconds: 30
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    field.cattle.io/targetWorkloadIds: '["deployment:default:sshd-docker-builder-01"]'
-    workload.cattle.io/targetWorkloadIdNoop: "true"
-    workload.cattle.io/workloadPortBased: "true"
-  labels:
-    cattle.io/creator: norman
-  name: sshd-docker-builder-01-nodeport
-  namespace: default
-## To create automatic cleanups uncomment the "ownerReferences" section and add the uid of the Deployment
-#  ownerReferences:
-#    - apiVersion: apps/v1
-#      controller: true
-#      kind: deployment
-#      name: sshd-docker-builder-01
-#      uid: #Need to insert the uid from the Deployment
-spec:
-  externalTrafficPolicy: Cluster
-  ports:
-    - name: 22tcp01
-      nodePort: 31122
-      port: 22
-      protocol: TCP
-      targetPort: 22
-  selector:
-    workload.user.cattle.io/workloadselector: deployment-default-sshd-docker-builder-01
-  sessionAffinity: None
-  type: NodePort
+      volumes:
+        - name: kube-config
+          secret:
+            defaultMode: 256
+            items:
+              - key: KUBE_CONFIG
+                mode: 256
+                path: config
+            optional: false
+            secretName: docker-builder-keys

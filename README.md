@@ -43,6 +43,10 @@ $ kubectl create -f ssh-key-secret.yaml
 $ kubectl create -f sshd-docker-builder.yaml
 ```
 
+NOTE:  Some SSH servers will not work with a Kubernetes mapped volume file.  Therefore, you must use an environment variable (in this case SSH_PUB_KEY) to hold the ssh public key.  The 
+entrypoint.sh script will then create the /root/.ssh/authorized_keys file with the contents of this environment variable.  The kubectl app does not have this issue and .kube/config can be mapped using a 
+Kubernetes "secret" volume file mount. 
+
 ## Find the endpoint of the SSH server
 ```
 kubectl describe service sshd-docker-builder-01-nodeport

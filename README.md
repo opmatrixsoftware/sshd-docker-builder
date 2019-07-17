@@ -2,9 +2,9 @@ CentOS 7 Docker in Docker (DinD) Image with SSHD and Helm
 ===============================
 
 # Description
-The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH and build other docker images and Helm Charts.  The image also has ``svn``, ``git``, and 
-``make`` 
-to copy/pull artifacts from version control systems directly in to the container and automate image building with ``make``. 
+The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH and build other 
+docker images and Helm Charts.  The image also has ``svn``, ``git``, and ``make`` to copy/pull artifacts from version control systems 
+directly in to the container and automate image building with ``make``. 
 
 ## Docker image
 
@@ -37,15 +37,19 @@ Manually:
 $ mkdir sshkeys
 $ ssh-keygen -q -f sshkeys/id_rsa -N '' -t rsa
 $ SSH_PUB_KEY=$(cat sshkeys/id_rsa.pub | base64 -w 0)
-$ sed 's/my_key/'$SSH_PUB_KEY'/' secret.yaml > ssh-key-secret.yaml
-$ unset SSH_PUB_KEY
-$ kubectl create -f ssh-key-secret.yaml
+$ KUBE_CONFIG=$(cat .kube/config |base64 -w 0)
+$ sed 's/my_key/'$SSH_PUB_KEY'/' secret.yaml > temp-secret.yaml
+$ sed 's/my_config/'$KUBE_CONFIG'/' temp-secret.yaml > docker-builder-keys.yaml
+$ unset SSH_PUB_KEY KUBE_CONFIG
+$ rm -f temp-secret.yaml
+$ kubectl create -f docker-builder-keys.yaml
 $ kubectl create -f sshd-docker-builder.yaml
 ```
 
-NOTE:  Some SSH servers will not work with a Kubernetes mapped volume file.  Therefore, you must use an environment variable (in this case SSH_PUB_KEY) to hold the ssh public key.  The 
-entrypoint.sh script will then create the /root/.ssh/authorized_keys file with the contents of this environment variable.  The kubectl app does not have this issue and .kube/config can be mapped using a 
-Kubernetes "secret" volume file mount. 
+NOTE:  SSH servers will not work with a keys in a Kubernetes mapped volume file.  Therefore, you must use an environment variable (in 
+this case SSH_PUB_KEY) to hold the ssh public key.  The ``entrypoint.sh`` script will then create the ``/root/.ssh/authorized_keys`` file
+ with the contents of this environment variable.  After the file is created the environment variable is removed.  The kubectl app does not 
+ have this issue, and .kube/config can be mapped using a Kubernetes "secret" volume file mount. 
 
 ## Find the endpoint of the SSH server
 ```

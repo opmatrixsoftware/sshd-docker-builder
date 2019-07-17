@@ -17,7 +17,8 @@ newkey:
 gensecret:
 	KEY=$$(cat sshkeys/id_rsa.pub |base64 -w 0) ;\
 	CONFIG=$$(cat .kube/config |base64 -w 0) ;\
-	sed "s/my_key/$${KEY}/" secret.yaml > secret2.yaml ;\
-	sed "s/my_config/$${CONFIG}/" secret2.yaml > docker-builder-keys.yaml
+	sed "s/my_key/$${KEY}/" secret.yaml > temp-secret.yaml ;\
+	sed "s/my_config/$${CONFIG}/" temp-secret.yaml > docker-builder-keys.yaml
+	rm -f temp-secret.yaml
 
 .PHONY: newkey gensecret addsshkey deploy remove

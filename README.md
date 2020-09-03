@@ -15,7 +15,7 @@ Centos:7 with helm, kubectl, docker, docker-compose, and openssh installed.
 Example yaml scripts to deploy in Kubernetes with the ability to access the container via SSH and build docker images.
 
 # How to deploy using Docker
-You must run this image with as privileged.
+You must run this image "as privileged".
 
 Example:
 ``

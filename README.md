@@ -2,9 +2,9 @@ CentOS 7 Docker in Docker (DinD) Image with SSHD and Helm
 ===============================
 
 # Description
-The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH and build other 
-docker images and Helm Charts.  The image also has ``svn``, ``git``, and ``make`` to copy/pull artifacts from version control systems 
-directly in to the container and automate image building with ``make``. 
+The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH to a full linux
+environment in order to build other docker images and Helm Charts.  The image also has ``svn``, ``git``, and ``make`` to copy/pull
+artifacts from version control systems directly in to the container and automate image building with ``make``. 
 
 ## Docker image
 

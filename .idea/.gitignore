@@ -1,7 +1,0 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Datasource local storage ignored files
-/../../../../../../:\Users\akbailey\CLionProjects\sshd-docker-builder\.idea/dataSources/
-/dataSources.local.xml
-/runConfigurations/sshd_docker_builder_Dockerfile.xml

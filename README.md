@@ -1,4 +1,4 @@
-CentOS 7 Docker in Docker (DinD) Image with SSHD and Helm
+CentOS 8 Docker in Docker (DinD) Image with SSHD and Helm
 ===============================
 
 # Description
@@ -8,7 +8,7 @@ artifacts from version control systems directly in to the container and automate
 
 ## Docker image
 
-Centos:7 with helm, kubectl, docker, docker-compose, and openssh installed.
+Centos:8 with helm, kubectl, docker, docker-compose, and openssh installed.
 
 ## Kubernetes files
 
@@ -19,7 +19,7 @@ You must run this image "as privileged".
 
 Example:
 ``
-$ docker run --privileged --name some-docker -d docker:dind
+$ docker run -d --privileged --name some-docker -p 2222:22 opmatrix/sshd-docker-builder
 ``
 
 # How to deploy in Kubernetes

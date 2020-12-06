@@ -3,7 +3,9 @@ COPY entrypoint.sh /
 ENV WORKDIR /root
 WORKDIR $WORKDIR
 COPY .bashrc $WORKDIR/
-RUN chmod 711 /entrypoint.sh;groupadd docker;dnf -y update && \
+RUN chmod 711 /entrypoint.sh && \
+    groupadd docker && \
+    dnf -y update && \
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
     chmod 711 $WORKDIR/kubectl && \
     mv $WORKDIR/kubectl /usr/local/bin && \

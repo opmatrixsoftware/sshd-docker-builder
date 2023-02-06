@@ -1,4 +1,4 @@
-CentOS 8 Docker in Docker (DinD) Image with SSHD and Helm
+Rocky Linux 9 Docker in Docker (DinD) Image with SSHD and Helm
 ===============================
 
 # Description
@@ -8,7 +8,7 @@ artifacts from version control systems directly in to the container and automate
 
 ## Docker image
 
-Centos:8 with helm, kubectl, docker, docker-compose, and openssh installed.
+rockylinux:9 with helm, kubectl, docker, docker-compose, and openssh installed.
 
 ## Kubernetes files
 
@@ -20,12 +20,12 @@ work on most Linux hosts.
 
 Example:
 ``
-$ docker run -d --privileged --name <your container name> -p 2222:22 -e SSH_PUB_KEY="<your public key>" opmatrix/sshd-docker-builder
+$ docker run -d --privileged --name <your container name> -p 2222:22 -e SSH_PUB_KEY="<your public key>" opmatrix/sshd-docker-builder:9
 ``
 
 # How to deploy in Kubernetes
 
-Run the Makefile or generate the a RSA key-pair.
+Run the Makefile or generate the RSA key-pair.
 Import the sshd-docker-builder-yaml file into Kubernetes
 
 With Make:

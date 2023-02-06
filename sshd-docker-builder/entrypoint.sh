@@ -14,4 +14,4 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 sysctl --system
 
 /usr/sbin/sshd -D &
-/usr/bin/dockerd
+/usr/bin/dockerd --storage-driver fuse-overlayfs

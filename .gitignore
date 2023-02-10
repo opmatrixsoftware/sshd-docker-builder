@@ -2,3 +2,4 @@
 .idea/
 .git/
 sshkeys/
+/sshd-docker-builder-keys.yaml

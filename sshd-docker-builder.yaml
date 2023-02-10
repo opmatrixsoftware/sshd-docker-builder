@@ -1,73 +1,55 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: sshd-docker-builder
   labels:
-    workload.user.cattle.io/workloadselector: deployment-default-docker-builder
-  name: docker-builder
+    app.kubernetes.io/name: sshd-docker-builder
   namespace: default
 spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-default-docker-builder
+      app.kubernetes.io/name: sshd-docker-builder
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sshd-docker-builder
+    spec:
+      containers:
+        - imagePullPolicy: Always
+          name: sshd-docker-builder
+          image: opmatrix/sshd-docker-builder:9
+          ports:
+            - name: ssh
+              expose: true
+              protocol: TCP
+              containerPort: 22
+              _serviceType: LoadBalancer
+              _ipam: dhcp
+              _listeningPort: 22
+          securityContext:
+            runAsRoot: true
+            readOnlyRootFilesystem: false
+            capabilities: {}
+            privileged: true
+            allowPrivilegeEscalation: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          __active: true
+      dnsPolicy: ClusterFirst
+      hostNetwork: false
+      hostname: sshd-docker-builder
+      restartPolicy: Always
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 5
   strategy:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        field.cattle.io/ports: '[[{"containerPort":22,"dnsName":"docker-builder-nodeport","kind":"NodePort","name":"22tcp311221","protocol":"TCP","sourcePort":31122}]]'
-      labels:
-        workload.user.cattle.io/workloadselector: deployment-default-docker-builder
-    spec:
-      containers:
-        - env:
-            - name: SSH_PUB_KEY
-              valueFrom:
-                secretKeyRef:
-                  key: SSH_PUB_KEY
-                  name: docker-builder-keys
-                  optional: false
-          image: docker.io/opmatrix/sshd-docker-builder
-          imagePullPolicy: Always
-          name: docker-builder
-          ports:
-            - containerPort: 22
-              name: 22tcp311221
-              protocol: TCP
-          resources: {}
-          securityContext:
-            allowPrivilegeEscalation: true
-            capabilities: {}
-            privileged: true
-            procMount: Default
-            readOnlyRootFilesystem: false
-            runAsNonRoot: false
-          stdin: true
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          tty: true
-          volumeMounts:
-            - mountPath: /root/.kube
-              name: kube-config
-      dnsConfig: {}
-      dnsPolicy: ClusterFirst
-      hostname: docker-builder
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
-      volumes:
-        - name: kube-config
-          secret:
-            defaultMode: 256
-            items:
-              - key: KUBE_CONFIG
-                mode: 256
-                path: config
-            optional: false
-            secretName: docker-builder-keys

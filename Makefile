@@ -12,7 +12,7 @@ remove:
 newkey:
 	rm -rf sshkeys
 	mkdir sshkeys
-	ssh-keygen -q -f sshkeys/id_rsa -N '' -t rsa
+	ssh-keygen -q -f sshkeys/id_rsa -N '' -t ecdsa
 
 gensecret:
 	KEY=$$(cat sshkeys/id_rsa.pub |base64 -w 0) ;\

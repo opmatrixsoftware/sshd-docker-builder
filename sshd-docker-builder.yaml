@@ -17,7 +17,6 @@ spec:
       containers:
         - imagePullPolicy: Always
           name: sshd-docker-builder
-          image: opmatrix/sshd-docker-builder:9
           ports:
             - name: ssh
               expose: true
@@ -26,16 +25,30 @@ spec:
               _serviceType: LoadBalancer
               _ipam: dhcp
               _listeningPort: 22
+          image: opmatrix/sshd-docker-builder:9
+          env:
+            - name: SSH_PUB_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: SSH_PUB_KEY
+                  name: sshd-docker-builder-keys
+                  optional: false
+            - name: KUBE_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  key: KUBE_CONFIG
+                  name: sshd-docker-builder-keys
+                  optional: false
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
           securityContext:
             runAsRoot: true
             readOnlyRootFilesystem: false
             capabilities: {}
             privileged: true
             allowPrivilegeEscalation: true
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
           __active: true
       dnsPolicy: ClusterFirst
       hostNetwork: false
@@ -53,3 +66,4 @@ spec:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
+__clone: true

@@ -16,9 +16,10 @@ RUN chmod 711 /entrypoint.sh && \
     chown root:root helm && \
     chmod 711 helm && \
     mv helm /usr/local/bin && \
-    dnf -y install git svn make openssh-server python3 python3-pip fuse-overlayfs procps-ng iptables dnsutils epel-release 'dnf-command(config-manager)' && \
+    dnf -y install man-pages man-db nano iputils bind-utils git svn make openssh-server python3 python3-pip fuse-overlayfs procps-ng iptables epel-release 'dnf-command(config-manager)' && \
     dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo && \
     dnf -y install docker-ce docker-ce-cli containerd.io --nobest && \
+    dnf -y install btop && \
     dnf clean all && \
     pip3 install --upgrade pip docker-compose && \
     rm -rf /run/nologin

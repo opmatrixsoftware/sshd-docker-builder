@@ -25,7 +25,7 @@ $ docker run -d --privileged --name <your container name> -p 2222:22 -e SSH_PUB_
 
 # How to deploy in Kubernetes
 
-Run the Makefile or generate the RSA key-pair.
+Run the Makefile or generate the ECDSA key-pair.
 Import the sshd-docker-builder-yaml file into Kubernetes
 
 With Make:
@@ -36,8 +36,8 @@ $ make all
 Manually:
 ```
 $ mkdir sshkeys
-$ ssh-keygen -q -f sshkeys/id_rsa -N '' -t rsa
-$ SSH_PUB_KEY=$(cat sshkeys/id_rsa.pub | base64 -w 0)
+$ ssh-keygen -q -f sshkeys/id_ecdsa -N '' -t ecdsa
+$ SSH_PUB_KEY=$(cat sshkeys/id_ecdsa.pub | base64 -w 0)
 $ KUBE_CONFIG=$(cat .kube/config |base64 -w 0)
 $ sed 's/my_key/'$SSH_PUB_KEY'/' secret.yaml > temp-secret.yaml
 $ sed 's/my_config/'$KUBE_CONFIG'/' temp-secret.yaml > docker-builder-keys.yaml

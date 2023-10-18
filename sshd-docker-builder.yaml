@@ -19,12 +19,8 @@ spec:
           name: sshd-docker-builder
           ports:
             - name: ssh
-              expose: true
               protocol: TCP
               containerPort: 22
-              _serviceType: LoadBalancer
-              _ipam: dhcp
-              _listeningPort: 22
           image: opmatrix/sshd-docker-builder:9
           env:
             - name: SSH_PUB_KEY
@@ -44,17 +40,14 @@ spec:
               cpu: 250m
               memory: 512Mi
           securityContext:
-            runAsRoot: true
             readOnlyRootFilesystem: false
             capabilities: {}
             privileged: true
             allowPrivilegeEscalation: true
-          __active: true
       dnsPolicy: ClusterFirst
       hostNetwork: false
       hostname: sshd-docker-builder
       restartPolicy: Always
-      serviceAccount: default
       serviceAccountName: default
       terminationGracePeriodSeconds: 30
   minReadySeconds: 0
@@ -66,4 +59,3 @@ spec:
       maxSurge: 1
       maxUnavailable: 0
     type: RollingUpdate
-__clone: true

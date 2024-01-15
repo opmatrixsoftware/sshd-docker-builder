@@ -12,7 +12,7 @@ chmod 600 /root/.ssh/authorized_keys
 mkdir -p /root/.kube
 touch /root/.kube
 printf "%s\n" "${KUBE_CONFIG}" > /root/.kube/config
-#unset ${KUBE_CONFIG}
+unset ${KUBE_CONFIG}
 chmod 600 /root/.kube/config
 
 echo 1 > /proc/sys/net/ipv4/ip_forward

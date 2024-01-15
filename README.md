@@ -38,7 +38,7 @@ Manually:
 $ mkdir sshkeys
 $ ssh-keygen -q -f sshkeys/id_ecdsa -N '' -t ecdsa
 $ SSH_PUB_KEY=$(cat sshkeys/id_ecdsa.pub | base64 -w 0)
-$ KUBE_CONFIG=$(cat .kube/config |base64 -w 0)
+$ KUBE_CONFIG=$(cat .kube/config | base64 -w 0)
 $ sed 's/my_key/'$SSH_PUB_KEY'/' secret.yaml > temp-secret.yaml
 $ sed 's/my_config/'$KUBE_CONFIG'/' temp-secret.yaml > docker-builder-keys.yaml
 $ unset SSH_PUB_KEY KUBE_CONFIG

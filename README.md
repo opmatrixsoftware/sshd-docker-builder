@@ -1,4 +1,4 @@
-Rocky Linux 9.4 Docker in Docker (DinD) Image with SSHD and Helm
+Rocky Linux 9.4 Docker in Docker (DinD) image with SSHD, Docker, kubectl, and helm
 ===============================
 
 # Description

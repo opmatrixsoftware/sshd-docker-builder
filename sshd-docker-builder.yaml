@@ -21,7 +21,7 @@ spec:
             - name: ssh
               protocol: TCP
               containerPort: 22
-          image: opmatrix/sshd-docker-builder:9.4
+          image: opmatrix/sshd-docker-builder:9
           env:
             - name: SSH_PUB_KEY
               valueFrom:

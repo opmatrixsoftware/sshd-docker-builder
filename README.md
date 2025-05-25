@@ -20,7 +20,7 @@ work on most Linux hosts.
 
 Example:
 ``
-$ docker run -d --privileged --name <your container name> -p 2222:22 -e SSH_PUB_KEY="<your public key>" opmatrix/sshd-docker-builder:9
+$ docker run -d --privileged --name <your container name> -p 2222:22 -e SSH_PUB_KEY="<your public key>" -e $KUBE_CONFIG="<your kube config>" opmatrix/sshd-docker-builder:9
 ``
 
 # How to deploy in Kubernetes

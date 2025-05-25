@@ -1,9 +1,9 @@
-Rocky Linux 9.4 Docker in Docker (DinD) image with SSHD, Docker, kubectl, and helm
+Rocky Linux 9.5 Docker in Docker (DinD) image with SSHD, Docker, kubectl, and helm
 ===============================
 
 # Description
 The purpose of this image is to give users, or automated build agents, the ability to have secure root access via SSH to a full linux
-environment in order to build other docker images and Helm Charts.  The image also has ``svn``, ``git``, and ``make`` to copy/pull
+environment to check connectivity, build other docker images, and build Helm Charts.  The image also has ``svn``, ``git``, and ``make`` to copy/pull
 artifacts from version control systems directly in to the container and automate image building with ``make``. 
 
 ## Docker image
@@ -12,7 +12,7 @@ rockylinux:9 with helm, kubectl, docker, docker-compose, and openssh installed.
 
 ## Kubernetes files
 
-Example yaml scripts to deploy in Kubernetes with the ability to access the container via SSH and build docker images.
+Example YAML scripts to deploy in Kubernetes with the ability to access the container via SSH and build docker images.
 
 # How to deploy using Docker
 You must run this image "as privileged".  This container has only been testing on Rocky Linux 9 and Ubuntu 22, but it should 
@@ -49,7 +49,7 @@ $ kubectl create -f sshd-docker-builder.yaml
 
 NOTE:  SSH servers will not work with keys in a Kubernetes mapped volume file.  Therefore, you must use an environment variable (in 
 this case SSH_PUB_KEY) to hold the ssh public key.  The ``entrypoint.sh`` script will then create the ``/root/.ssh/authorized_keys`` file
- with the contents of this environment variable with the correct permissions.  After the file is created the environment variable is 
+ with the contents of this environment variable with the correct permissions.  After the file is created, the environment variable is 
  removed.  The kubectl app does not have this issue, and .kube/config can be mapped using a Kubernetes "secret" volume file mount. 
 
 ## Find the endpoint of the SSH server
